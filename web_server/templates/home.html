@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <style>
+        .menu_option {
+            font-size: 30px
+        }
+
+        .menu_option:hover {
+            font-size: 26px;
+            background: #ff0000
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function load_visits(){
+            url = '{{ url }}'
+            $.getJSON(url, function(data) {
+                $("#visitas").html(String(data['visits']));
+            });
+        }
+        window.onload = load_visits
+    </script>
+</head>
+
+<body style="background: #f2f2f2">
+<table border="1">
+    <tr style="background: #ed8080; font-size:20px">
+        <th>Site map</th>
+        <th>About</th>
+        <th>Page Visits Counter</th>
+    </tr>
+    <tr>
+        <td style="width:20%">
+            <a href="/" class="menu_option">Home</a>
+            <br>
+            <a href="/about" class="menu_option">About</a>
+            <br>
+            <a href="/jobs" class="menu_option">Work with us 🔥🔥🔥🔥</a>
+            <br>
+            <a href="/legal" class="menu_option">Legal️</a>
+        </td>
+        <td style="width:70%" align="center">
+            <img src="static/home4.jpeg"/>
+            <img src="static/home2.jpeg"/>
+            <img src="static/home3.jpeg"/>
+            <img src="static/home1.jpeg" width="543" height="187"/>
+            <p>An error occurred while processing your request.<br>
+                Reference #97.96d8f648.1619301083.45917e2c</p>
+        </td>
+        <td style="writing-mode: vertical-rl;background: #f4dfb0;font-size:40px">
+            <table border="1" style="font-size:40px">
+                <tr>
+                    <th>Visit counter content</th>
+                </tr>
+                <tr>
+                    <td>AMOUNT: <span id="visitas">-</span></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <style>
+        .menu_option {
+            font-size: 30px
+        }
+
+        .menu_option:hover {
+            font-size: 26px;
+            background: #ff0000
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function load_visits(){
+            url = '{{ url }}'
+            $.getJSON(url, function(data) {
+                $("#visitas").html(String(data['visits']));
+            });
+        }
+        window.onload = load_visits
+    </script>
+</head>
+
+<body style="background: #f2f2f2">
+<table border="1">
+    <tr style="background: #ed8080; font-size:20px">
+        <th>Site map</th>
+        <th>About</th>
+        <th>Page Visits Counter</th>
+    </tr>
+    <tr>
+        <td style="width:20%">
+            <a href="/" class="menu_option">Home</a>
+            <br>
+            <a href="/about" class="menu_option">About</a>
+            <br>
+            <a href="/jobs" class="menu_option">Work with us 🔥🔥🔥🔥</a>
+            <br>
+            <a href="/legal" class="menu_option">Legal️</a>
+        </td>
+        <td style="width:70%" align="center">
+            <div style="line-height:120%;padding-bottom:12px;padding-top:12px;font-size:10pt;"><font
+                    style="font-family:inherit;font-size:10pt;font-weight:bold;">EMPLOYEE RELATIONS</font></div>
+            <div style="line-height:120%;padding-bottom:12px;padding-top:12px;font-size:10pt;"><font
+                    style="font-family:inherit;font-size:10pt;">As of </font><font
+                    style="font-family:inherit;font-size:10pt;">Aug. 31, 2015</font><font
+                    style="font-family:inherit;font-size:10pt;">, we employed about 22,500 regular employees worldwide
+                and approximately 3,000 temporary employees. The number of temporary employees varies greatly during the
+                year because of the seasonal nature of our business. We believe that relations between Monsanto and its
+                employees are satisfactory. For additional information on employee relations, see Item&nbsp;8 —
+                Financial Statements and Supplementary Data — and Note </font><font
+                    style="font-family:inherit;font-size:10pt;">5</font><font
+                    style="font-family:inherit;font-size:10pt;"> — </font><font
+                    style="font-family:inherit;font-size:10pt;">Restructuring</font><font
+                    style="font-family:inherit;font-size:10pt;">.</font></div>
+        </td>
+        <td style="writing-mode: vertical-rl;background: #f4dfb0;font-size:40px">
+            <table border="1" style="font-size:40px">
+                <tr>
+                    <th>Visit counter content</th>
+                </tr>
+                <tr>
+                    <td>AMOUNT: <span id="visitas">-</span></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+
+</html>

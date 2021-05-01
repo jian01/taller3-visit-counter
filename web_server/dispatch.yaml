@@ -1,0 +1,5 @@
+dispath:
+  - url: "/visits"
+    service: visit-counter
+  - url: "*/*"
+  - service: default

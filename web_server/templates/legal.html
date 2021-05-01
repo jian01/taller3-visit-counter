@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <style>
+        .menu_option {
+            font-size: 30px
+        }
+
+        .menu_option:hover {
+            font-size: 26px;
+            background: #ff0000
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function load_visits(){
+            url = '{{ url }}'
+            $.getJSON(url, function(data) {
+                $("#visitas").html(String(data['visits']));
+            });
+        }
+        window.onload = load_visits
+    </script>
+</head>
+
+<body style="background: #f2f2f2">
+<table border="1">
+    <tr style="background: #ed8080; font-size:20px">
+        <th>Site map</th>
+        <th>About</th>
+        <th>Page Visits Counter</th>
+    </tr>
+    <tr>
+        <td style="width:20%">
+            <a href="/" class="menu_option">Home</a>
+            <br>
+            <a href="/about" class="menu_option">About</a>
+            <br>
+            <a href="/jobs" class="menu_option">Work with us 🔥🔥🔥🔥</a>
+            <br>
+            <a href="/legal" class="menu_option">Legal️</a>
+        </td>
+        <td style="width:70%" align="center">
+            <div style="line-height:120%;padding-top:12px;font-size:10pt;"><font
+                    style="font-family:inherit;font-size:10pt;">Monsanto
+                was incorporated in Delaware on Feb. 9, 2000, as a subsidiary of
+                Pharmacia Corporation (subsequently converted to Pharmacia LLC).
+                Monsanto includes the operations, assets and liabilities that were
+                previously the agricultural business of Pharmacia. Pharmacia is now a
+                subsidiary of Pfizer Inc.</font></div>
+            <div style="line-height:120%;padding-top:12px;font-size:10pt;"><font
+                    style="font-family:inherit;font-size:10pt;">“Monsanto,”
+                “the company,” “we,” “our” and “us” are used interchangeably to refer
+                to Monsanto Company or to Monsanto Company and its subsidiaries, as
+                appropriate to the context. With respect to the time period prior to
+                Sept. 1, 2000, these defined terms also refer to the agricultural
+                business of Pharmacia.</font></div>
+            <div style="line-height:120%;padding-top:12px;font-size:10pt;"><font
+                    style="font-family:inherit;font-size:10pt;">Unless
+                otherwise indicated, trademarks owned or licensed by Monsanto or its
+                subsidiaries are shown in special type. Unless otherwise indicated,
+                references to “</font><font style="font-family:inherit;font-size:10pt;font-style:italic;">Roundup</font><font
+                    style="font-family:inherit;font-size:10pt;"> herbicides” mean </font><font
+                    style="font-family:inherit;font-size:10pt;font-style:italic;">Roundup</font><font
+                    style="font-family:inherit;font-size:10pt;"> branded herbicides, excluding all
+                lawn-and-garden herbicides, and references to “</font><font
+                    style="font-family:inherit;font-size:10pt;font-style:italic;">Roundup</font><font
+                    style="font-family:inherit;font-size:10pt;"> and other glyphosate-based herbicides”
+                exclude all lawn-and-garden herbicides.</font></div>
+            <div style="line-height:120%;padding-top:18px;font-size:10pt;"><font
+                    style="font-family:inherit;font-size:10pt;font-weight:bold;">ITEM&nbsp;3. LEGAL
+                PROCEEDINGS</font></div>
+            <div style="line-height:120%;padding-top:12px;font-size:10pt;"><font
+                    style="font-family:inherit;font-size:10pt;">We
+                are involved in various legal proceedings that arise in the ordinary
+                course of our business, as well as proceedings that we have considered
+                to be material under SEC regulations. These include proceedings to which
+                we are party in our own name and proceedings to which our former
+                parent, Pharmacia LLC, or its former subsidiary, Solutia Inc., is a
+                party but that we manage and for which we are responsible pursuant to
+                certain indemnification agreements. Information regarding certain
+                material proceedings and the possible effects on our business of
+                proceedings we are defending is disclosed in Note </font><font
+                    style="font-family:inherit;font-size:10pt;">24</font><font
+                    style="font-family:inherit;font-size:10pt;"> — </font><font
+                    style="font-family:inherit;font-size:10pt;">Commitments and Contingencies</font><font
+                    style="font-family:inherit;font-size:10pt;">— under the subheading “Environmental and
+                Litigation Liabilities — Litigation” and is incorporated by reference herein. </font></div>
+            <br>
+        </td>
+        <td style="writing-mode: vertical-rl;background: #f4dfb0;font-size:40px">
+            <table border="1" style="font-size:40px">
+                <tr>
+                    <th>Visit counter content</th>
+                </tr>
+                <tr>
+                    <td>AMOUNT: <span id="visitas">-</span></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+
+</html>
