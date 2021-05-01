@@ -44,28 +44,28 @@ def register_visit_for_key(key):
 
 @app.route('/')
 def home():
-    key = 'institutional_%s' % request.path
+    key = 'institutional_home'
     register_visit_for_key(key)
     return render_template('home.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
 
 
 @app.route('/about')
 def about():
-    key = 'institutional_%s' % request.path
+    key = 'institutional_about'
     register_visit_for_key(key)
     return render_template('about.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
 
 
 @app.route('/jobs')
 def jobs():
-    key = 'institutional_%s' % request.path
+    key = 'institutional_jobs'
     register_visit_for_key(key)
     return render_template('jobs.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
 
 
 @app.route('/legal')
 def legal():
-    key = 'institutional_%s' % request.path
+    key = 'institutional_legal'
     register_visit_for_key(key)
     return render_template('legal.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
 

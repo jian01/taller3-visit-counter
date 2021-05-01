@@ -1,10 +1,30 @@
-from flask import Flask, render_template, url_for, request
-from flask_cors import cross_origin
-from google.cloud import datastore
-import json
+import logging
 
-datastore_client = datastore.Client()
+logger = logging.getLogger('root')
+logger.setLevel(logging.DEBUG)
+logger.debug("Logging started")
+
+from flask import Flask, request
+
+logger.debug("Creating app")
 app = Flask(__name__)
+
+from flask_cors import cross_origin
+from google.appengine.api import memcache
+from google.appengine.ext import ndb
+import json
+import random
+
+logger.debug("Creating datastore client")
+
+CACHE_TIME = 300
+PARTITION_KEY_FORMAT = "%s_%d"
+PARTITIONS_TO_USE = 100
+
+
+class VisitCount(ndb.Model):
+    key = ndb.StringProperty()
+    amount = ndb.IntegerProperty()
 
 
 @app.route('/visits', methods=['GET'])
@@ -12,31 +32,38 @@ app = Flask(__name__)
 def visits_get():
     visits = 1
     key_arg = request.args.get('key')
-    key = datastore_client.key("Visit Count", key_arg)
-    entity = datastore_client.get(key)
-    if entity:
-        visits = entity['amount']
+    cached_visits = memcache.get(key=key_arg)
+    if cached_visits:
+        return json.dumps({'visits': cached_visits})
+    entities = VisitCount.query(VisitCount.key == key_arg).fetch()
+    if entities:
+        visits = sum([e.amount for e in entities])
+        memcache.add(key=key_arg, value=visits, time=CACHE_TIME)
     return json.dumps({'visits': visits})
-
 
 @app.route('/visits', methods=['POST'])
 def visit_updater():
     payload = request.get_data(as_text=True)
     key_arg = json.loads(payload)['key']
-    key = datastore_client.key("Visit Count", key_arg)
-    entity = datastore_client.get(key)
+    partition = random.randint(0, PARTITIONS_TO_USE)
+    key_part_arg = PARTITION_KEY_FORMAT % (key_arg, partition)
+    key = ndb.Key("VisitCount", key_part_arg)
+    entity = key.get()
     if entity:
-        entity["amount"] += 1
-        datastore_client.put(entity)
+        entity.amount = entity.amount + 1
+        entity.put()
     else:
-        entity = datastore.Entity(key=key)
-        entity.update(
-            {
-                "amount": 1,
-            }
-        )
-        datastore_client.put(entity)
+        VisitCount(id=key_part_arg, key=key_arg,
+                   amount=1).put()
+    memcache.incr(key=key_arg)
     return '{"status": "OK"}'
+
+
+@app.errorhandler(Exception)
+def server_error(e):
+    # Log the error and stacktrace.
+    logger.exception('An error occurred during a request.')
+    return 'An internal error occurred.', 500
 
 
 if __name__ == '__main__':
