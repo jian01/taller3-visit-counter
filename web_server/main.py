@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, request
 from google.cloud import tasks_v2
+from functools import lru_cache
 import json
 
 app = Flask(__name__)
@@ -42,32 +43,37 @@ def register_visit_for_key(key):
                 visit_payload)
 
 
+@lru_cache
+def render_template_w_url(template_path, url):
+    return render_template(template_path, url=url)
+
+
 @app.route('/')
 def home():
     key = 'institutional_home'
     register_visit_for_key(key)
-    return render_template('home.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
+    return render_template_w_url('home.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
 
 
 @app.route('/about')
 def about():
     key = 'institutional_about'
     register_visit_for_key(key)
-    return render_template('about.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
+    return render_template_w_url('about.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
 
 
 @app.route('/jobs')
 def jobs():
     key = 'institutional_jobs'
     register_visit_for_key(key)
-    return render_template('jobs.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
+    return render_template_w_url('jobs.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
 
 
 @app.route('/legal')
 def legal():
     key = 'institutional_legal'
     register_visit_for_key(key)
-    return render_template('legal.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
+    return render_template_w_url('legal.html', url=(VISIT_ENDPOINT+URI_FOR_VISIT_COUNT_GET)%key)
 
 
 if __name__ == '__main__':

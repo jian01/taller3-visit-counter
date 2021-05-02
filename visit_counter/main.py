@@ -17,7 +17,7 @@ import random
 
 logger.debug("Creating datastore client")
 
-CACHE_TIME = 300
+CACHE_TIME = 600
 PARTITION_KEY_FORMAT = "%s_%d"
 PARTITIONS_TO_USE = 100
 
