@@ -1,0 +1,9 @@
+Method,Name,Error,Occurrences
+GET,/jobs,HTTPError('500 Server Error: Internal Server Error for url: https://taller3-proca.ue.r.appspot.com/jobs'),25
+GET,/,HTTPError('500 Server Error: Internal Server Error for url: https://taller3-proca.ue.r.appspot.com/'),629
+GET,/visits?key=institutional_jobs,HTTPError('500 Server Error: Internal Server Error for url: https://visit-counter-dot-taller3-proca.ue.r.appspot.com/visits?key=institutional_jobs'),106
+GET,/visits?key=institutional_home,HTTPError('500 Server Error: Internal Server Error for url: https://visit-counter-dot-taller3-proca.ue.r.appspot.com/visits?key=institutional_home'),2735
+GET,/visits?key=institutional_about,HTTPError('500 Server Error: Internal Server Error for url: https://visit-counter-dot-taller3-proca.ue.r.appspot.com/visits?key=institutional_about'),568
+GET,/legal,HTTPError('500 Server Error: Internal Server Error for url: https://taller3-proca.ue.r.appspot.com/legal'),14
+GET,/visits?key=institutional_legal,HTTPError('500 Server Error: Internal Server Error for url: https://visit-counter-dot-taller3-proca.ue.r.appspot.com/visits?key=institutional_legal'),54
+GET,/about,HTTPError('500 Server Error: Internal Server Error for url: https://taller3-proca.ue.r.appspot.com/about'),101

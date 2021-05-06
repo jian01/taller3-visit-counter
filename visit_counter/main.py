@@ -17,15 +17,9 @@ import random
 
 logger.debug("Creating datastore client")
 
-CACHE_TIME = 600
-PARTITION_KEY_FORMAT = "%s_%d"
-PARTITIONS_TO_USE = 100
-
-
-class VisitCount(ndb.Model):
-    key = ndb.StringProperty()
-    amount = ndb.IntegerProperty()
-
+CACHE_TIME = 60
+KIND_PARTITION_FORMAT = "VisitCount%d"
+from visit_counters import *
 
 @app.route('/visits', methods=['GET'])
 @cross_origin()
@@ -35,26 +29,37 @@ def visits_get():
     cached_visits = memcache.get(key=key_arg)
     if cached_visits:
         return json.dumps({'visits': cached_visits})
-    entities = VisitCount.query(VisitCount.key == key_arg).fetch()
-    if entities:
-        visits = sum([e.amount for e in entities])
+    entity_visits = []
+    for i in range(1, len(VISIT_COUNT_CLASSES)+1):
+        key = ndb.Key(KIND_PARTITION_FORMAT % i, key_arg)
+        entity = key.get()
+        if entity:
+            entity_visits.append(entity.amount)
+    if entity_visits:
+        visits = sum(entity_visits)
         memcache.add(key=key_arg, value=visits, time=CACHE_TIME)
     return json.dumps({'visits': visits})
 
-@app.route('/visits', methods=['POST'])
-def visit_updater():
-    payload = request.get_data(as_text=True)
-    key_arg = json.loads(payload)['key']
-    partition = random.randint(0, PARTITIONS_TO_USE)
-    key_part_arg = PARTITION_KEY_FORMAT % (key_arg, partition)
-    key = ndb.Key("VisitCount", key_part_arg)
+@ndb.transactional(retries=1)
+def increase_counter(partition, key_wout_partition):
+    """
+    :param partition: the partition
+    :param key_wout_partition: the counter name
+    """
+    key = ndb.Key(KIND_PARTITION_FORMAT % partition, key_wout_partition)
     entity = key.get()
     if entity:
         entity.amount = entity.amount + 1
         entity.put()
     else:
-        VisitCount(id=key_part_arg, key=key_arg,
-                   amount=1).put()
+        VISIT_COUNT_CLASSES[partition-1](id=key_wout_partition, amount=1).put()
+
+@app.route('/visits', methods=['POST'])
+def visit_updater():
+    payload = request.get_data(as_text=True)
+    key_arg = json.loads(payload)['key']
+    partition = random.randint(1, len(VISIT_COUNT_CLASSES))
+    increase_counter(partition, key_arg)
     memcache.incr(key=key_arg)
     return '{"status": "OK"}'
 
